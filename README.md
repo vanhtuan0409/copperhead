@@ -15,7 +15,9 @@ go get -u github.com/vanhtuan0409/copperhead
 Copperhead support unmarshal struct using values from
 
 1/ Command line args
+
 2/ Environment variables
+
 3/ Config file
 
 Example usage:
