@@ -2,6 +2,8 @@
 
 A wrapper around [spf13/viper](https://github.com/spf13/viper) and [spf13/pflag](https://github.com/spf13/pflag) with opinionted interface.
 
+[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/vanhtuan0409/copperhead)
+
 ### Installation
 
 Install by running:
