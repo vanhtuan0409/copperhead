@@ -1,4 +1,4 @@
-package common
+package copperhead
 
 import (
 	"reflect"

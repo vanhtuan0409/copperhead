@@ -21,7 +21,11 @@ Copperhead support unmarshal struct using values from
 Example usage:
 
 ```go
+package main
+
 import (
+	"encoding/json"
+	"fmt"
 	"reflect"
 	"time"
 
@@ -33,10 +37,28 @@ type Config struct {
 	Timeout  time.Duration `mapstructure:"timeout" default:"5s" description:"HTTP request timeout"`
 }
 
+func (c *Config) String() string {
+	s, _ := json.MarshalIndent(c, "", "\t")
+	return string(s)
+}
+
 func main() {
 	cfg := Config{}
 	copperhead.Unmarshal(&cfg, reflect.TypeOf(cfg), copperhead.ConfigOptions{})
+	fmt.Println(cfg.String())
 }
+```
+
+CLI Help:
+
+```
+$ go run main.go -h
+Usage of /tmp/go-build191072962/b001/exe/main:
+      --config string    Path to config file (default "config.yaml")
+      --port string      HTTP binding port (default "8080")
+      --timeout string   HTTP request timeout (default "5s")
+pflag: help requested
+exit status 2
 ```
 
 ### Config
@@ -52,4 +74,32 @@ Copperhead provide 3 struct tags:
 
 #### Nested struct
 
-Nested struct will be key path will be intepreted with `.`
+Nested struct will be key path will be intepreted with `.` for cli args and `__` for env var
+
+Example:
+```
+type Config struct {
+	NestedStruct struct {
+		MyNumber int `mapstructure:"my_number" default:"10"`
+	} `mapstructure:"nested_struct"`
+}
+```
+
+Will be intepreted as:
+
+```yaml
+# Yaml file
+nested_struct:
+  my_number: 10
+```
+
+```sh
+$ go run main.go -h
+Usage of /tmp/go-build793598133/b001/exe/main:
+      --config string                    Path to config file (default "config.yaml")
+      --nested-struct.my-number string    (default "10")
+pflag: help requested
+exit status 2
+```
+
+And environment variable `NESTED_STRUCT__MY_NUMBER`
